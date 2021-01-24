@@ -1,11 +1,9 @@
 package fr.esimed.search_company.data.dao
 
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 import fr.esimed.search_company.data.model.SearchResult
 
+@Dao
 interface SearchResultDAO
 {
     @Query("SELECT * FROM searchresult ORDER BY id, company_corporate_name")
