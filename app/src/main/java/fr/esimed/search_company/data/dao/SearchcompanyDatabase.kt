@@ -5,15 +5,15 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.esimed.search_company.data.model.SearchCompany
-import fr.esimed.search_company.data.model.SearchResult
+import fr.esimed.search_company.data.model.Company
 import java.text.ParseException
 
-@Database(entities = [SearchCompany::class, SearchResult::class], version = 1)
+@Database(entities = [SearchCompany::class, Company::class], version = 3)
 
 abstract class SearchcompanyDatabase: RoomDatabase()
 {
     abstract fun searchCompanyDAO(): SearchCompanyDAO
-    abstract fun searchResultDAO(): SearchResultDAO
+    abstract fun companyDAO(): CompanyDAO
 
     fun seed()
     {
@@ -24,16 +24,16 @@ abstract class SearchcompanyDatabase: RoomDatabase()
                 val seedSearchCompany = SearchCompany(name_company = "esimed")
                 val idCompany = searchCompanyDAO().insert(seedSearchCompany)
 
-                if (searchResultDAO().count() == 0)
+                if (companyDAO().count() == 0)
                 {
-                    val searchResult = SearchResult(company_corporate_name = "esimed",
+                    val company = Company(company_corporate_name = "esimed",
                             siren = 4428243026,
                             siret = 42824302600013,
                             created_date = "20000101",
                             company_category = "PME",
                             id_search_company = idCompany)
 
-                    searchResultDAO().insert(searchResult)
+                    companyDAO().insert(company)
                 }
             }
         }

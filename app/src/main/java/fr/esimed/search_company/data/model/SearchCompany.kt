@@ -4,7 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity
-data class SearchCompany(@PrimaryKey(autoGenerate = true) var id:Long? = null, var name_company:String)
+data class SearchCompany(@PrimaryKey(autoGenerate = true) var id:Long? = null, var name_company:String = "", var department:Int = 0)
 {
     override fun toString(): String
     {
