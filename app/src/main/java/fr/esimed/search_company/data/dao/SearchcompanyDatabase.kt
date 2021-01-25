@@ -8,7 +8,7 @@ import fr.esimed.search_company.data.model.SearchCompany
 import fr.esimed.search_company.data.model.Company
 import java.text.ParseException
 
-@Database(entities = [SearchCompany::class, Company::class], version = 3)
+@Database(entities = [SearchCompany::class, Company::class], version = 1)
 
 abstract class SearchcompanyDatabase: RoomDatabase()
 {
