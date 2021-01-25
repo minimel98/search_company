@@ -2,13 +2,14 @@ package fr.esimed.search_company.data.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
-data class SearchCompany(@PrimaryKey(autoGenerate = true) var id:Long? = null, var name_company:String = "", var department:Int = 0)
+data class SearchCompany(@PrimaryKey(autoGenerate = true) var id:Long? = null, var name_company:String = "", var department:String = ""): Serializable
 {
     override fun toString(): String
     {
-        return String.format(name_company)
+        return "$name_company  -  $department"
     }
 
     override fun equals(other: Any?): Boolean
