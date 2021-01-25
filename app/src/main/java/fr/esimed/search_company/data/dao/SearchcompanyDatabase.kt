@@ -21,7 +21,7 @@ abstract class SearchcompanyDatabase: RoomDatabase()
         {
             if (searchCompanyDAO().count() == 0)
             {
-                val seedSearchCompany = SearchCompany(name_company = "esimed")
+                val seedSearchCompany = SearchCompany(name_company = "esimed", department = "13", siret = 42824302600013)
                 val idCompany = searchCompanyDAO().insert(seedSearchCompany)
 
                 if (companyDAO().count() == 0)
@@ -31,6 +31,7 @@ abstract class SearchcompanyDatabase: RoomDatabase()
                             siret = 42824302600013,
                             created_date = "20000101",
                             company_category = "PME",
+                            address = "10 Rue Edmond Rostand 13006 Marseille",
                             id_search_company = idCompany)
 
                     companyDAO().insert(company)
