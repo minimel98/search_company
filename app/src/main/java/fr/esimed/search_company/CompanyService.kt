@@ -1,6 +1,7 @@
 package fr.esimed.search_company
 
 import android.util.JsonReader
+import android.util.JsonToken
 import fr.esimed.search_company.data.model.SearchCompany
 import java.io.IOException
 import java.net.URL
@@ -46,7 +47,16 @@ class CompanyService()
                             when (reader.nextName())
                             {
                                 "nom_raison_sociale" -> searchCompany.name_company = reader.nextString()
-                                "departement" -> searchCompany.department = reader.nextInt()
+                                "departement" -> {
+                                    if (reader.peek() == JsonToken.NULL)
+                                    {
+                                        reader.nextNull()
+                                    }
+                                    else
+                                    {
+                                        searchCompany.department = reader.nextString()
+                                    }
+                                }
                                 else -> reader.skipValue()
                             }
                         }
