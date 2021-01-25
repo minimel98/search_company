@@ -2,4 +2,11 @@
     <string name="app_name">search_company</string>
 
     <string name="title_search_company">Rechercher une entreprise</string>
+
+    <string name="name_company">Toutes les infos sur %s</string>
+    <string name="crated_date_company">Entreprise créée le : %s</string>
+    <string name="category_company">Catégorie : %s</string>
+    <string name="siren_company">Siren : %d</string>
+    <string name="siret_company">Siret : %d</string>
+
 </resources>
