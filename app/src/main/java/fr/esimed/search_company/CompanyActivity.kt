@@ -17,6 +17,17 @@ class CompanyActivity : AppCompatActivity()
     {
         private val dlg = Dialog(this@CompanyActivity)
 
+        fun formatDateFr(date: String):String
+        {
+            val year: String = date.substring(0,4)
+            val month: String = date.substring(4,6)
+            val day: String = date.substring(6,8)
+            var dateformat: String=""
+
+            dateformat="$day $month $year"
+            return  dateformat
+        }
+
         override fun onPreExecute()
         {
             layout.visibility = View.INVISIBLE
@@ -33,8 +44,11 @@ class CompanyActivity : AppCompatActivity()
 
         override fun onPostExecute(result: Company?)
         {
+            val date = result?.created_date
+            val format = formatDateFr(date.toString())
+
             layout.findViewById<TextView>(R.id.text_view_name_company).text = String.format(getString(R.string.name_company), result?.company_corporate_name)
-            layout.findViewById<TextView>(R.id.text_view_crated_date_company).text = String.format(getString(R.string.crated_date_company), result?.created_date)
+            layout.findViewById<TextView>(R.id.text_view_crated_date_company).text = String.format(getString(R.string.crated_date_company), format)
             layout.findViewById<TextView>(R.id.text_view_address_company).text = String.format(getString(R.string.address_company), result?.address)
             layout.findViewById<TextView>(R.id.text_view_category_company).text = String.format(getString(R.string.category_company), result?.company_category)
             layout.findViewById<TextView>(R.id.text_view_siren_company).text = String.format(getString(R.string.siren_company), result?.siren?.toLong())
