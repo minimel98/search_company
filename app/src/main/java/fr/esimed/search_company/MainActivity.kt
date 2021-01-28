@@ -9,11 +9,12 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import fr.esimed.search_company.data.dao.SearchcompanyDatabase
+import fr.esimed.search_company.data.model.Company
 import fr.esimed.search_company.data.model.SearchCompany
 
 class MainActivity : AppCompatActivity()
 {
-    inner class QueryCompanyTask(private val service: CompanyService, private val listView: ListView): AsyncTask<String, Void, List<SearchCompany>>()
+    inner class QuerySearchCompanyTask(private val service: CompanyService, private val listView: ListView): AsyncTask<String, Void, List<Company>>()
     {
         private val dlg = Dialog(this@MainActivity)
 
@@ -25,47 +26,52 @@ class MainActivity : AppCompatActivity()
             dlg.show()
         }
 
-        override fun doInBackground(vararg params: String?): List<SearchCompany>
+        override fun doInBackground(vararg params: String?): List<Company>
         {
             val query = params[0] ?: return emptyList()
-            return service.getSearchCompany(query)
+            return service.getCompany(query)
         }
 
-        override fun onPostExecute(result: List<SearchCompany>?)
+        override fun onPostExecute(result: List<Company>?)
         {
-            listView.adapter = ArrayAdapter<SearchCompany>(applicationContext, android.R.layout.simple_list_item_2, android.R.id.text2, result!!)
+            listView.adapter = ArrayAdapter<Company>(applicationContext, android.R.layout.simple_list_item_2, android.R.id.text2, result!!)
             listView.visibility = View.VISIBLE
             dlg.dismiss()
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val db = SearchcompanyDatabase.getDatabase(this)
-        db.seed()
-
         val list = findViewById<ListView>(R.id.list_search_company)
 
-        val svc = CompanyService()
+        val db = SearchcompanyDatabase.getDatabase(this)
+        val daoSearch = db.searchCompanyDAO()
+        val daoCompany = db.companyDAO()
+        val daoJoint = db.jointureTableDAO()
+
+        val svc = CompanyService(daoSearch,daoCompany,daoJoint)
 
         findViewById<ImageButton>(R.id.btn_search).setOnClickListener {
-            val editName = findViewById<EditText>(R.id.edit_text_search).text.toString()
+            val editSearchCompany = findViewById<EditText>(R.id.edit_text_search).text.toString()
 
-            if (editName.isEmpty() || editName.isBlank())
+            if (editSearchCompany.isEmpty() || editSearchCompany.isBlank())
             {
                 Toast.makeText(this, "Veuillez écrire un nom d'entreprise pour faire une recherche", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
-            QueryCompanyTask(svc, list).execute(editName)
 
+            QuerySearchCompanyTask(svc, list).execute(editSearchCompany)
         }
 
         list.setOnItemClickListener { parent, view, position, id ->
-            val searchCompany = list.getItemAtPosition(position) as SearchCompany
+            val positionCompany = list.getItemAtPosition(position) as Company
+            val siret = positionCompany.siret
+
             intent = Intent(this, CompanyActivity::class.java)
-            intent.putExtra("searchCompany", searchCompany)
+            intent.putExtra("searchCompany", siret)
             this.startActivity(intent)
         }
     }

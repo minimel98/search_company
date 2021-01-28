@@ -6,6 +6,12 @@ import fr.esimed.search_company.data.model.SearchCompany
 @Dao
 interface SearchCompanyDAO
 {
+    @Query("SELECT id FROM searchcompany WHERE url = :url")
+    fun getIdByUrl(url: String): Long
+
+    @Query("SELECT * FROM searchcompany WHERE url = :url")
+    fun getByUrl(url: String): SearchCompany?
+
     @Query("SELECT * FROM searchcompany ORDER BY id, name_company")
     fun getAll(): List<SearchCompany>
 

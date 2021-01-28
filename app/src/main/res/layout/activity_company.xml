@@ -20,10 +20,22 @@ android:id="@+id/layout_company">
         android:layout_margin="@dimen/space_between_item"/>
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_view_first_activity_company"
+        android:text="@string/first_activity_company"
+        android:layout_margin="15px"/>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_between_item"/>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_view_crated_date_company"
-        android:text="@string/crated_date_company"
+        android:id="@+id/text_view_category_company"
+        android:text="@string/category_company"
         android:layout_margin="15px"/>
 
     <Space
@@ -46,9 +58,10 @@ android:id="@+id/layout_company">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/text_view_category_company"
-        android:text="@string/category_company"
+        android:id="@+id/text_view_crated_date_company"
+        android:text="@string/crated_date_company"
         android:layout_margin="15px"/>
+
 
     <Space
         android:layout_width="match_parent"

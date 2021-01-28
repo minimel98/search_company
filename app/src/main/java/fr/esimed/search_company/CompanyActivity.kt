@@ -8,12 +8,13 @@ import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import fr.esimed.search_company.data.dao.SearchcompanyDatabase
 import fr.esimed.search_company.data.model.Company
 import fr.esimed.search_company.data.model.SearchCompany
 
 class CompanyActivity : AppCompatActivity()
 {
-    inner class QueryCompanyTask(private val service:CompanyService, private val layout: LinearLayout): AsyncTask<SearchCompany, Void, Company>()
+    inner class QueryCompanyTask(private val service:CompanyService, private val layout: LinearLayout): AsyncTask<Long, Void, Company>()
     {
         private val dlg = Dialog(this@CompanyActivity)
 
@@ -24,7 +25,7 @@ class CompanyActivity : AppCompatActivity()
             val day: String = date.substring(6,8)
             var dateformat: String=""
 
-            dateformat="$day $month $year"
+            dateformat="$day/$month/$year"
             return  dateformat
         }
 
@@ -36,10 +37,10 @@ class CompanyActivity : AppCompatActivity()
             dlg.show()
         }
 
-        override fun doInBackground(vararg params: SearchCompany?): Company?
+        override fun doInBackground(vararg params: Long?): Company?
         {
             val query = params[0] ?: return null
-            return service.getCompany(query)
+            return service.getDetail(query)
         }
 
         override fun onPostExecute(result: Company?)
@@ -48,6 +49,7 @@ class CompanyActivity : AppCompatActivity()
             val format = formatDateFr(date.toString())
 
             layout.findViewById<TextView>(R.id.text_view_name_company).text = String.format(getString(R.string.name_company), result?.company_corporate_name)
+            layout.findViewById<TextView>(R.id.text_view_first_activity_company).text = String.format(getString(R.string.first_activity_company), result?.first_activity)
             layout.findViewById<TextView>(R.id.text_view_crated_date_company).text = String.format(getString(R.string.crated_date_company), format)
             layout.findViewById<TextView>(R.id.text_view_address_company).text = String.format(getString(R.string.address_company), result?.address)
             layout.findViewById<TextView>(R.id.text_view_category_company).text = String.format(getString(R.string.category_company), result?.company_category)
@@ -59,13 +61,16 @@ class CompanyActivity : AppCompatActivity()
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?)
-    {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_company)
+        val db = SearchcompanyDatabase.getDatabase(this)
+        val daoCompany = db.companyDAO()
+        val daoSearch = db.searchCompanyDAO()
+        val daoJoint = db.jointureTableDAO()
+        val svc = CompanyService(daoSearch, daoCompany, daoJoint)
 
-        val svc = CompanyService()
-        val searchCompany = intent.getSerializableExtra("searchCompany") as SearchCompany
+        val searchCompany = intent.getSerializableExtra("searchCompany") as Long
 
         val layout = findViewById<LinearLayout>(R.id.layout_company)
         QueryCompanyTask(svc, layout).execute(searchCompany)

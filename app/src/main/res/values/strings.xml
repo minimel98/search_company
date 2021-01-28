@@ -3,9 +3,10 @@
 
     <string name="title_search_company">Rechercher une entreprise</string>
 
-    <string name="name_company">Toutes les infos sur %s</string>
+    <string name="name_company">%s</string>
     <string name="crated_date_company">Date de création : %s</string>
-    <string name="address_company">Située au %s</string>
+    <string name="address_company">localisée à l\' adresse : %s</string>
+    <string name="first_activity_company">Activité principale : %s</string>
     <string name="category_company">Catégorie : %s</string>
     <string name="siren_company">Siren : %d</string>
     <string name="siret_company">Siret : %d</string>

@@ -6,14 +6,16 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import fr.esimed.search_company.data.model.SearchCompany
 import fr.esimed.search_company.data.model.Company
+import fr.esimed.search_company.data.model.JointureTable
 import java.text.ParseException
 
-@Database(entities = [SearchCompany::class, Company::class], version = 1)
+@Database(entities = [SearchCompany::class, Company::class, JointureTable::class], version = 2)
 
 abstract class SearchcompanyDatabase: RoomDatabase()
 {
     abstract fun searchCompanyDAO(): SearchCompanyDAO
     abstract fun companyDAO(): CompanyDAO
+    abstract fun jointureTableDAO(): JointureTableDAO
 
     fun seed()
     {
@@ -21,8 +23,10 @@ abstract class SearchcompanyDatabase: RoomDatabase()
         {
             if (searchCompanyDAO().count() == 0)
             {
-                val seedSearchCompany = SearchCompany(name_company = "esimed", department = "13", siret = 42824302600013)
+                val seedSearchCompany = SearchCompany(name_company = "esimed")
                 val idCompany = searchCompanyDAO().insert(seedSearchCompany)
+                val jointure = JointureTable()
+                jointureTableDAO().insert(jointure)
 
                 if (companyDAO().count() == 0)
                 {
@@ -32,6 +36,8 @@ abstract class SearchcompanyDatabase: RoomDatabase()
                             created_date = "20000101",
                             company_category = "PME",
                             address = "10 Rue Edmond Rostand 13006 Marseille",
+                            first_activity = "Formation continue d'adultes",
+                            department = 13,
                             id_search_company = idCompany)
 
                     companyDAO().insert(company)

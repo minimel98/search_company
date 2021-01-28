@@ -5,11 +5,11 @@ import androidx.room.PrimaryKey
 import java.io.Serializable
 
 @Entity
-data class SearchCompany(@PrimaryKey(autoGenerate = true) var id:Long? = null, var name_company:String = "", var department:String = "département non renseigné", var siret:Long = 0): Serializable
+data class SearchCompany(@PrimaryKey(autoGenerate = true) var id:Long? = null, var name_company:String = "", var url:String = ""): Serializable
 {
     override fun toString(): String
     {
-        return "$name_company  -  $department"
+        return "$name_company"
     }
 
     override fun equals(other: Any?): Boolean

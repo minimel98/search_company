@@ -3,11 +3,12 @@ package fr.esimed.search_company.data.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
-@Entity(foreignKeys = [ForeignKey(entity = SearchCompany::class,
+@Entity/*(foreignKeys = [ForeignKey(entity = SearchCompany::class,
     parentColumns = ["id"],
     childColumns = ["id_search_company"],
-    onDelete = ForeignKey.CASCADE)])
+    onDelete = ForeignKey.CASCADE)])*/
 
 data class Company(@PrimaryKey(autoGenerate = true) var id:Long? = null,
                    var company_corporate_name:String = "",
@@ -16,11 +17,13 @@ data class Company(@PrimaryKey(autoGenerate = true) var id:Long? = null,
                    var created_date:String = "",
                    var company_category:String = "",
                    var address:String = "",
-                   var id_search_company:Long = 0)
+                   var first_activity: String = "",
+                   var department: Int = 0,
+                   var id_search_company:Long = 0): Serializable
 {
     override fun toString(): String
     {
-        return String.format(company_corporate_name, siren, siret, created_date, company_category)
+        return "$company_corporate_name, $department, $first_activity"
     }
 
     override fun equals(other: Any?): Boolean
