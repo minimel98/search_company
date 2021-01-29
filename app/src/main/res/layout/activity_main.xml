@@ -52,7 +52,7 @@
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/radio_btn_cd_psotal"
+                android:id="@+id/radio_btn_cd_postal"
                 android:text="@string/text_radio_btn_cd_postal"
                 android:layout_marginRight="5dp"/>
 

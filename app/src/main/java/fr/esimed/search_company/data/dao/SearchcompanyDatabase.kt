@@ -37,7 +37,7 @@ abstract class SearchcompanyDatabase: RoomDatabase()
                             company_category = "PME",
                             address = "10 Rue Edmond Rostand 13006 Marseille",
                             first_activity = "Formation continue d'adultes",
-                            department = 13,
+                            department = "13",
                             id_search_company = idCompany)
 
                     companyDAO().insert(company)

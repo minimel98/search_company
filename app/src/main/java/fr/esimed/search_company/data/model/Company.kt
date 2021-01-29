@@ -5,10 +5,7 @@ import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.io.Serializable
 
-@Entity/*(foreignKeys = [ForeignKey(entity = SearchCompany::class,
-    parentColumns = ["id"],
-    childColumns = ["id_search_company"],
-    onDelete = ForeignKey.CASCADE)])*/
+@Entity
 
 data class Company(@PrimaryKey(autoGenerate = true) var id:Long? = null,
                    var company_corporate_name:String = "",
@@ -18,7 +15,7 @@ data class Company(@PrimaryKey(autoGenerate = true) var id:Long? = null,
                    var company_category:String = "",
                    var address:String = "adresse non renseigné",
                    var first_activity: String = "",
-                   var department: Int = 0,
+                   var department: String = "aucun département renseigné",
                    var id_search_company:Long = 0): Serializable
 {
     override fun toString(): String

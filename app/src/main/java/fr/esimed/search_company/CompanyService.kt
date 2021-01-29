@@ -1,8 +1,5 @@
 package fr.esimed.search_company
 
-import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.util.JsonReader
 import android.util.JsonToken
 import fr.esimed.search_company.data.dao.CompanyDAO
@@ -12,7 +9,6 @@ import fr.esimed.search_company.data.model.Company
 import fr.esimed.search_company.data.model.JointureTable
 import fr.esimed.search_company.data.model.SearchCompany
 import java.io.IOException
-import java.lang.Exception
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
@@ -20,11 +16,12 @@ class CompanyService(val searchDAO:SearchCompanyDAO, val companyDAO:CompanyDAO, 
 {
     private val apiUrl = "https://entreprise.data.gouv.fr"
     private val queryUrl = "$apiUrl/api/sirene/v1/full_text/%s"
+    //private val queryFilterDepartment = "$queryUrl?&departement=%s"
 
-    fun getCompany(query: String): List<Company>
+    fun getCompany(query: String /*, queryDepartment: String*/): List<Company>
     {
-        val url = URL(String.format(queryUrl, query))
-        val urlString = String.format(queryUrl, query)
+        val url = URL(String.format(queryUrl, query /*, queryFilterDepartment, queryDepartment*/))
+        val urlString = String.format(queryUrl, query /*, queryFilterDepartment, queryDepartment*/)
         val urlExist = searchDAO.getByUrl(urlString)
         val listCompany = mutableListOf<Company>()
 
@@ -122,7 +119,7 @@ class CompanyService(val searchDAO:SearchCompanyDAO, val companyDAO:CompanyDAO, 
                                         }
                                         else
                                         {
-                                            company.department = reader.nextInt()
+                                            company.department = reader.nextString()
                                         }
                                     }
 

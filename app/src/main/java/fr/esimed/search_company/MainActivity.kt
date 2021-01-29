@@ -3,7 +3,6 @@ package fr.esimed.search_company
 import android.app.ActionBar
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.AsyncTask
@@ -34,7 +33,8 @@ class MainActivity : AppCompatActivity()
         override fun doInBackground(vararg params: String?): List<Company>
         {
             val query = params[0] ?: return emptyList()
-            return service.getCompany(query)
+            //val query2 = params[1] ?: return emptyList()
+            return service.getCompany(query /*,query2*/)
         }
 
         override fun onPostExecute(result: List<Company>?)
@@ -72,6 +72,21 @@ class MainActivity : AppCompatActivity()
                 return@setOnClickListener
             }
 
+            /*
+            val editDepartment = findViewById<EditText>(R.id.edit_text_radio_btn).text.toString()
+
+            val radioDepartment = findViewById<RadioButton>(R.id.radio_btn_departmernt)
+            val radioCdPostal = findViewById<RadioButton>(R.id.radio_btn_cd_postal)
+
+            if (radioDepartment.isChecked)
+            {
+                QuerySearchCompanyTask(svc, list).execute(editSearchCompany, editDepartment)
+            }
+            else
+            {
+                QuerySearchCompanyTask(svc, list).execute(editSearchCompany)
+            }
+             */
             QuerySearchCompanyTask(svc, list).execute(editSearchCompany)
         }
 
