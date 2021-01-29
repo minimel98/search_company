@@ -10,7 +10,10 @@
     <string name="category_company">Catégorie : %s</string>
     <string name="siren_company">Siren : %d</string>
     <string name="siret_company">Siret : %d</string>
+    <string name="label_edit_text">Nom :</string>
     <string name="placeholder">Entrer le nom d\' une entreprise</string>
+    <string name="text_radio_btn_cd_postal">Code postal</string>
+    <string name="text_radio_btn_department">Département</string>
     <string name="btn_alert_dial_ok">OK</string>
 
 </resources>
