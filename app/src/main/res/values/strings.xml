@@ -10,5 +10,7 @@
     <string name="category_company">Catégorie : %s</string>
     <string name="siren_company">Siren : %d</string>
     <string name="siret_company">Siret : %d</string>
+    <string name="placeholder">Entrer le nom d\' une entreprise</string>
+    <string name="btn_alert_dial_ok">OK</string>
 
 </resources>

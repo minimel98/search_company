@@ -1,7 +1,10 @@
 package fr.esimed.search_company
 
 import android.app.ActionBar
+import android.app.AlertDialog
 import android.app.Dialog
+import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
@@ -10,13 +13,13 @@ import android.view.View
 import android.widget.*
 import fr.esimed.search_company.data.dao.SearchcompanyDatabase
 import fr.esimed.search_company.data.model.Company
-import fr.esimed.search_company.data.model.SearchCompany
 
 class MainActivity : AppCompatActivity()
 {
     inner class QuerySearchCompanyTask(private val service: CompanyService, private val listView: ListView): AsyncTask<String, Void, List<Company>>()
     {
         private val dlg = Dialog(this@MainActivity)
+        val builder = AlertDialog.Builder(this@MainActivity)
 
         override fun onPreExecute()
         {
@@ -24,6 +27,8 @@ class MainActivity : AppCompatActivity()
             dlg.window?.setLayout(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.WRAP_CONTENT)
             dlg.setContentView(R.layout.loading)
             dlg.show()
+            builder.setMessage(String.format("Attention vous ne pouvez pas effectuer une nouvelle rechercher quand vous n'êtes pas connecté à internet"))
+            builder.setPositiveButton(R.string.btn_alert_dial_ok, DialogInterface.OnClickListener{ dialog, _ -> dialog.dismiss() })
         }
 
         override fun doInBackground(vararg params: String?): List<Company>
@@ -34,6 +39,10 @@ class MainActivity : AppCompatActivity()
 
         override fun onPostExecute(result: List<Company>?)
         {
+            if (result?.isNullOrEmpty() == true)
+            {
+                builder.create().show()
+            }
             listView.adapter = ArrayAdapter<Company>(applicationContext, android.R.layout.simple_list_item_2, android.R.id.text2, result!!)
             listView.visibility = View.VISIBLE
             dlg.dismiss()
@@ -52,7 +61,7 @@ class MainActivity : AppCompatActivity()
         val daoCompany = db.companyDAO()
         val daoJoint = db.jointureTableDAO()
 
-        val svc = CompanyService(daoSearch,daoCompany,daoJoint)
+        val svc = CompanyService(daoSearch, daoCompany, daoJoint)
 
         findViewById<ImageButton>(R.id.btn_search).setOnClickListener {
             val editSearchCompany = findViewById<EditText>(R.id.edit_text_search).text.toString()

@@ -1,5 +1,8 @@
 package fr.esimed.search_company
 
+import android.app.AlertDialog
+import android.content.Context
+import android.content.DialogInterface
 import android.util.JsonReader
 import android.util.JsonToken
 import fr.esimed.search_company.data.dao.CompanyDAO
@@ -9,10 +12,11 @@ import fr.esimed.search_company.data.model.Company
 import fr.esimed.search_company.data.model.JointureTable
 import fr.esimed.search_company.data.model.SearchCompany
 import java.io.IOException
+import java.lang.Exception
 import java.net.URL
 import javax.net.ssl.HttpsURLConnection
 
-class CompanyService(val daoSearch:SearchCompanyDAO, val daoCompany:CompanyDAO, val daoJointure:JointureTableDAO)
+class CompanyService(val searchDAO:SearchCompanyDAO, val companyDAO:CompanyDAO, val jointureDAO:JointureTableDAO)
 {
     private val apiUrl = "https://entreprise.data.gouv.fr"
     private val queryUrl = "$apiUrl/api/sirene/v1/full_text/%s"
@@ -21,16 +25,16 @@ class CompanyService(val daoSearch:SearchCompanyDAO, val daoCompany:CompanyDAO, 
     {
         val url = URL(String.format(queryUrl, query))
         val urlString = String.format(queryUrl, query)
-        val urlExist = daoSearch.getByUrl(urlString)
+        val urlExist = searchDAO.getByUrl(urlString)
         val listCompany = mutableListOf<Company>()
 
         if (urlExist != null)
         {
-            val idCompanies = daoJointure.getById(urlExist.id)
+            val idCompanies = jointureDAO.getById(urlExist.id)
 
             for (id in idCompanies)
             {
-                listCompany.add(daoCompany.getAllById(id))
+                listCompany.add(companyDAO.getAllById(id))
             }
             return listCompany
         }
@@ -52,7 +56,7 @@ class CompanyService(val daoSearch:SearchCompanyDAO, val daoCompany:CompanyDAO, 
                 val inputStream = connection.inputStream ?: return emptyList()
                 val reader = JsonReader(inputStream.bufferedReader())
 
-                daoSearch.insert(SearchCompany(name_company = query, url = urlString))
+                searchDAO.insert(SearchCompany(name_company = query, url = urlString))
 
                 reader.beginObject()
                 while (reader.hasNext())
@@ -127,11 +131,11 @@ class CompanyService(val daoSearch:SearchCompanyDAO, val daoCompany:CompanyDAO, 
                             }
                             reader.endObject()
                             listCompany.add(company)
-                            daoCompany.insert(company)
-                            val idCompany = daoCompany.getIdBySiret(company.siret)
-                            val idSearch = daoSearch.getIdByUrl(urlString)
+                            companyDAO.insert(company)
+                            val idCompany = companyDAO.getIdBySiret(company.siret)
+                            val idSearch = searchDAO.getIdByUrl(urlString)
                             val joint = JointureTable(id_company = idCompany, id_search = idSearch)
-                            daoJointure.insert(joint)
+                            jointureDAO.insert(joint)
                         }
                         reader.endArray()
                     }
@@ -156,7 +160,7 @@ class CompanyService(val daoSearch:SearchCompanyDAO, val daoCompany:CompanyDAO, 
 
     fun getDetail(siret :Long): Company
     {
-        val company = daoCompany.getAllBySiret(siret)
+        val company = companyDAO.getAllBySiret(siret)
         return company
     }
 }

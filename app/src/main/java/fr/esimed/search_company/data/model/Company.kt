@@ -16,14 +16,14 @@ data class Company(@PrimaryKey(autoGenerate = true) var id:Long? = null,
                    var siret:Long = 0,
                    var created_date:String = "",
                    var company_category:String = "",
-                   var address:String = "",
+                   var address:String = "adresse non renseigné",
                    var first_activity: String = "",
                    var department: Int = 0,
                    var id_search_company:Long = 0): Serializable
 {
     override fun toString(): String
     {
-        return "$company_corporate_name, $department, $first_activity"
+        return "$company_corporate_name   -   $department"
     }
 
     override fun equals(other: Any?): Boolean
